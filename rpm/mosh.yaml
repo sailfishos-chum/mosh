@@ -70,8 +70,17 @@ SubPackages:
       Summary: Mobile Shell Server
       Group: Applications
       AutoDepend: false
+      RequiresPostUn:
+        - systemd
+      RequiresPost:
+        - systemd
       Description: |
-          NOTE: This will install a firewall rule that allows incoming connections on wifii on ports 60001-60999!
+          This provides the server part of mosh. Typically not needed on a phone.
+
+          SECURITY NOTE: This will install a firewall rule that allows incoming
+          connections on UDP ports 60000-60010 while on Wifi.
+          Take care that no other apps are listening on that port range while on an untrusted network!
+          Edit or remove /etc/connman/firewall.d/99-mosh-firewall.conf to disable this.
 
           Mosh is a remote terminal application that supports:
             - intermittent network connectivity,

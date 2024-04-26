@@ -53,9 +53,16 @@ Screenshots:
 %package server
 Summary:    Mobile Shell Server
 Group:      Applications
+Requires(post): systemd
+Requires(postun): systemd
 
 %description server
-NOTE: This will install a firewall rule that allows incoming connections on wifii on ports 60001-60999!
+This provides the server part of mosh. Typically not needed on a phone.
+
+SECURITY NOTE: This will install a firewall rule that allows incoming
+connections on UDP ports 60000-60010 while on Wifi.
+Take care that no other apps are listening on that port range while on an untrusted network!
+Edit or remove /etc/connman/firewall.d/99-mosh-firewall.conf to disable this.
 
 Mosh is a remote terminal application that supports:
   - intermittent network connectivity,
@@ -118,6 +125,22 @@ printf 'setting shebang for perl interpreter to #!%s\n' %{__perl}
 find %{buildroot}/%{_bindir} -type f -exec sed -i '1s=^#!/usr/bin/\(perl\|env perl\)[5]\?=#!%{__perl}=' {} +
 
 # << install post
+
+%post server
+# >> post server
+# Package install: reload the firewall
+if [ $1 -eq 1 ] ; then
+systemctl try-restart connman.service >/dev/null 2>&1 || :
+fi
+# << post server
+
+%postun server
+# >> postun server
+# Package install: reload the firewall
+if [ $1 -eq 0 ] ; then
+systemctl try-restart connman.service >/dev/null 2>&1 || :
+fi
+# << postun server
 
 %files
 %defattr(-,root,root,-)
