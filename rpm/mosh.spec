@@ -95,6 +95,8 @@ Screenshots:
 
 %build
 # >> build pre
+# protoc wants CXX 14 or later
+export CXXFLAGS="$CXXFLAGS -std=c++14"
 # << build pre
 
 %reconfigure --disable-static \
