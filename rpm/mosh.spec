@@ -95,6 +95,7 @@ Screenshots:
 
 %build
 # >> build pre
+export CXXFLAGS="$CXXFLAGS -std=c++14"
 # << build pre
 
 %reconfigure --disable-static \
