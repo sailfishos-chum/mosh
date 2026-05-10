@@ -35,7 +35,7 @@ Mosh is a remote terminal application that supports:
   - intelligent local echo and line editing to reduce the effects
     of "network lag" on high-latency connections.
 
-%if "%{?vendor}" == "chum"
+%if 0%{?_chum}
 Type: console-application
 PackagedBy: nephros
 Categories:
@@ -95,8 +95,14 @@ Screenshots:
 
 %build
 # >> build pre
+%if 0%{?sailfishos_version} < 50100
 # protoc wants CXX 14 or later
 export CXXFLAGS="$CXXFLAGS -std=c++14"
+%else
+# see comment in that file
+sed -i 's/-Wno-c++17-extensions//' configure.ac
+export CXXFLAGS="$CXXFLAGS -std=c++17"
+%endif
 # << build pre
 
 %reconfigure --disable-static \

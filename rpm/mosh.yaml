@@ -17,7 +17,7 @@ Description: |
       - intelligent local echo and line editing to reduce the effects
         of "network lag" on high-latency connections.
 
-    %if "%{?vendor}" == "chum"
+    %if 0%{?_chum}
     Type: console-application
     PackagedBy: nephros
     Categories:
